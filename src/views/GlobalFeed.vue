@@ -1,5 +1,6 @@
 <script setup>
 import Feed from '@/components/Feed.vue'
+import PopularTag from '@/components/PopularTags.vue'
 const apiUrl = '/articles'
 </script>
 
@@ -12,7 +13,7 @@ const apiUrl = '/articles'
                 <Feed :api-url="apiUrl"/>
             </section>
             <aside class="col-md-3">
-                POPULAR TAG
+                <PopularTag />
             </aside>
         </div>
 
