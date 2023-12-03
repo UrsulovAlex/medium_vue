@@ -7,12 +7,12 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
+      component: () => import('@/views/Login.vue')
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/Register.vue')
+      component: () => import('@/views/Register.vue')
     },
     {
       path: '/',
@@ -22,12 +22,12 @@ const router = createRouter({
     {
       path: '/feed',
       name: 'yourFeed',
-      component: GlobalFeed
+      component: () => import('@/views/YourFeed.vue')
     },
     {
       path: '/tag/:slug',
       name: 'tag',
-      component: GlobalFeed
+      component: () => import('@/views/TagFeed.vue')
     },
     {
       path: '/articles/new',

@@ -6,36 +6,43 @@ import { computed, watch } from "vue"
 import QueryString  from "@/libraries/queryString"
 import { LIMIT } from '@/helpers/const'
 import Pagination from '@/components/Pagination.vue'
+import Loading from '@/components/Loading.vue'
+import ErrorMessage from "@/components/ErrorMessage.vue"
 
-const props = defineProps({
-  apiUrl: { type: String, required: true },
-});
-const { data, loading, error } = storeToRefs(feedMediumStore());
-const { getFeed } = feedMediumStore();
+const props = defineProps(['apiUrl'])
+const { data, loading, error } = storeToRefs(feedMediumStore())
+const { getFeed } = feedMediumStore()
 
-const route = useRoute();
+const route = useRoute()
 const baseUrl = computed(() => route.path)
 const currentPage = computed(() => Number(route.query.page || '1'))
 const offset = computed(() => currentPage.value * LIMIT - LIMIT)
+const currentUrl = computed(() => {
+  const currentSlug = route.params.slug
+  return `${props.apiUrl}${currentSlug}`
+})
 
-getFeed(props.apiUrl)
-watch(currentPage, () => fetchFeed())
+getFeed(currentUrl.value)
+watch(() => route.params.slug, () => {
+  fetchFeed()
+})
 
 function fetchFeed() {
-    const parsedUrl = QueryString.parseUrl(props.apiUrl)
+    const parsedUrl = QueryString.parseUrl(currentUrl.value)
     const stringifiedParams = QueryString.stringify({
     limit: LIMIT,
     offset: offset.value,
     ...parsedUrl.query
     })
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`
-    console.log('stringifiedParams', offset.value)
     getFeed(apiUrlWithParams)
 }
 
 </script>
 <template>
-  <section class="feed" v-if="data">
+  <Loading v-if="loading"/>
+  <ErrorMessage v-if="error" :message="error" />
+  <section class="feed" v-if="!loading">
     <article
       class="article-preview"
       v-for="(article, index) in data.articles"

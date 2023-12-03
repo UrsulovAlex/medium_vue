@@ -2,8 +2,8 @@
 import Feed from '@/components/Feed.vue'
 import PopularTag from '@/components/PopularTags.vue'
 import Banner from '@/components/Banner.vue'
+const apiUrl = `/articles?tag=`;
 
-const apiUrl = '/articles'
 </script>
 
 <template> 
@@ -12,7 +12,7 @@ const apiUrl = '/articles'
     <div class="container page">
         <div class="row">
             <section class="col-md-9">
-                <Feed :api-url="apiUrl"/>
+                <Feed :api-url="apiUrl" />
             </section>
             <aside class="col-md-3">
                 <PopularTag />

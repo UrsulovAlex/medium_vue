@@ -3,7 +3,7 @@ import Feed from '@/components/Feed.vue'
 import PopularTag from '@/components/PopularTags.vue'
 import Banner from '@/components/Banner.vue'
 
-const apiUrl = '/articles'
+const apiUrl = '/articles/feed'
 </script>
 
 <template> 
