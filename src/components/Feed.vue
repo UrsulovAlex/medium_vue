@@ -19,23 +19,25 @@ const currentPage = computed(() => Number(route.query.page || '1'))
 const offset = computed(() => currentPage.value * LIMIT - LIMIT)
 const currentUrl = computed(() => {
   const currentSlug = route.params.slug
-  return `${props.apiUrl}${currentSlug}`
+  return currentSlug?.length ? `${props.apiUrl}${currentSlug}` : `/articles`
 })
 
 getFeed(currentUrl.value)
-watch(() => route.params.slug, () => {
+
+watch([route.params.slug, currentPage], () => {
   fetchFeed()
 })
 
+
 function fetchFeed() {
-    const parsedUrl = QueryString.parseUrl(currentUrl.value)
-    const stringifiedParams = QueryString.stringify({
+  const parsedUrl = QueryString.parseUrl(currentUrl.value)
+  const stringifiedParams = QueryString.stringify({
     limit: LIMIT,
     offset: offset.value,
     ...parsedUrl.query
-    })
-    const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`
-    getFeed(apiUrlWithParams)
+  })
+  const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`
+  getFeed(apiUrlWithParams)
 }
 
 </script>
